@@ -67,3 +67,14 @@ npm run test --TAGS="@test or @add"
 11. `src\helper\util` -> Read test data from json & logger
 
 
+
+### Documentation for api testing
+
+1. [RestFul](https://restful-booker.herokuapp.com/apidoc/index.html)
+
+
+### TODO List 
+1. Read JSON and apply in gherkin file 
+2. Add context global for data response validation (Given, When, Then) Storage similary hooks
+3. Add functional testing mobil
+4. Add functional testing web

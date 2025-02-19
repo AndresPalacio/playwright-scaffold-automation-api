@@ -2,8 +2,7 @@ Feature: Login basic api
     
     @login
     Scenario Outline: Authenticated Users - Login
-        Given User enter the username as "<username>"
-        And User enter the password as "<password>"
+        Given User enter the username as "<username>" and password as "<password>"
         Then the user should be logged in
 
         Examples:

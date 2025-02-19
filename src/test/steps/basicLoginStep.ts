@@ -1,13 +1,12 @@
 import { Given, When, Then, setDefaultTimeout } from "@cucumber/cucumber";
 
 import { expect } from "@playwright/test";
-import { fixture } from "../../hooks/pageFixture";
 import { ApiHelper } from "../../helper/util/api/apiHelper";
 
 import { contextApi } from "../../helper/util/constants";
 
-setDefaultTimeout(60 * 1000 * 2)
 
+let responseApi: any;
 
 Given('User enter the username as {string} and password as {string}', async function (username, password) {
 
@@ -17,6 +16,12 @@ Given('User enter the username as {string} and password as {string}', async func
         username: username,
         password: password
     }
-    await apiHelper.hitApiEndPoint("post", "/login", payload, 200);
-    
+    responseApi = await apiHelper.hitApiEndPoint("post", "/login", payload, 200);
+    console.log(responseApi);
 });
+
+
+Then('the user should be logged in', async function () {
+    // Write code here that turns the phrase above into concrete actions
+    expect(responseApi).toHaveProperty("token");
+  });

@@ -3,8 +3,7 @@ import { log } from "console";
 import { Helper } from "./Helper";
 import { StringLiteral } from "typescript";
 
-// const BASE_URL = "https://restful-booker.herokuapp.com";
-const BASE_URL = "https://www.rabstract.com";
+ const BASE_URL = "https://restful-booker.herokuapp.com";
 export class ApiHelper extends Helper {
   private apiContext: any;
 
