@@ -13,17 +13,14 @@ export class ApiHelper extends Helper {
    * API. It is used to store and manage information related to the API, such as authentication
    * credentials, request headers, and other configuration settings.
    */
-  constructor(apiContext: any) {
+  constructor(apiContext?: any) {
     super();
-    this.apiContext = apiContext;
-    // this.apiContext = apiContext({
-    //   extraHTTPHeaders: {
-    //     Authorization: `Bearer 12345`,
-    //     "Content-Type": `application/json`,
-    //   },
-    // });
+    if (apiContext) {
+      this.apiContext = apiContext;
+    } else {
+      this.apiContext = request.newContext();
+    }
   }
-
   /**
    * The function `hitApiEndPoint` is an asynchronous function that takes in an operation type, an
    * endpoint, a payload, and a status code, and then invokes the corresponding API method based on the
