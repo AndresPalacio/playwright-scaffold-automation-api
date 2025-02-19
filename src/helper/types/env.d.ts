@@ -7,6 +7,7 @@ declare global {
             ENV: "staging" | "prod" | "test",
             BASEURL: string,
             HEAD: "true" | "false"
+            TEST_FOR_API_REST: "true" | "false"
         }
     }
 }
