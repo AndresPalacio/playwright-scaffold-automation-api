@@ -9,13 +9,13 @@ import { contextApi } from "../../helper/util/constants";
 let responseApi: any;
 
 Given('User enter the username as {string} and password as {string}', async function (username, password) {
-
-    const apiHelper = await new ApiHelper();
+    const apiContext = await request.newContext();
+    const apiHelper = await new ApiHelper(apiContext);
     const payload = {
         username: username,
         password: password
     }
-    responseApi = await apiHelper.invokePostApi("/login", payload,200);
+    responseApi = await apiHelper.invokePostApi("/auth", payload,200);
     fixture.logger.info("Searching for a book: " + JSON.stringify(responseApi));
    
     console.log("data example" + responseApi);

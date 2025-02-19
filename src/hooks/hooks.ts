@@ -7,6 +7,7 @@ import { createLogger } from "winston";
 import { options } from "../helper/util/logger";
 const fs = require("fs-extra");
 
+let isApiTest = process.env.BASEURL || false;
 let browser: Browser;
 let context: BrowserContext;
 
@@ -16,47 +17,52 @@ BeforeAll(async function () {
 
 // It will trigger for not auth scenarios
 Before({ tags: "not @auth and not @api" }, async function ({ pickle }) {
-    if (!browser) {
-        browser = await invokeBrowser();
+    
+    if(!isApiTest){
+        if (!browser) {
+            browser = await invokeBrowser();
+        }
+        const scenarioName = pickle.name + pickle.id;
+        context = await browser.newContext({
+            recordVideo: {
+                dir: "test-results/videos",
+            },
+        });
+        await context.tracing.start({
+            name: scenarioName,
+            title: pickle.name,
+            sources: true,
+            screenshots: true, snapshots: true
+        });
+        const page = await context.newPage();
+        fixture.page = page;
+        fixture.logger = createLogger(options(scenarioName));
     }
-    const scenarioName = pickle.name + pickle.id;
-    context = await browser.newContext({
-        recordVideo: {
-            dir: "test-results/videos",
-        },
-    });
-    await context.tracing.start({
-        name: scenarioName,
-        title: pickle.name,
-        sources: true,
-        screenshots: true, snapshots: true
-    });
-    const page = await context.newPage();
-    fixture.page = page;
-    fixture.logger = createLogger(options(scenarioName));
 });
 
 // It will trigger for auth scenarios
 Before({ tags: "@auth and not @api" }, async function ({ pickle }) {
-    if (!browser) {
-        browser = await invokeBrowser();
+    if(!isApiTest){
+        if (!browser) {
+            browser = await invokeBrowser();
+        }
+        const scenarioName = pickle.name + pickle.id;
+        context = await browser.newContext({
+            storageState: getStorageState(pickle.name),
+            recordVideo: {
+                dir: "test-results/videos",
+            },
+        });
+        await context.tracing.start({
+            name: scenarioName,
+            title: pickle.name,
+            sources: true,
+            screenshots: true, snapshots: true
+        });
+        const page = await context.newPage();
+        fixture.page = page;
+        fixture.logger = createLogger(options(scenarioName));
     }
-    const scenarioName = pickle.name + pickle.id;
-    context = await browser.newContext({
-        storageState: getStorageState(pickle.name),
-        recordVideo: {
-            dir: "test-results/videos",
-        },
-    });
-    await context.tracing.start({
-        name: scenarioName,
-        title: pickle.name,
-        sources: true,
-        screenshots: true, snapshots: true
-    });
-    const page = await context.newPage();
-    fixture.page = page;
-    fixture.logger = createLogger(options(scenarioName));
 });
 
 After(async function ({ pickle, result }) {
