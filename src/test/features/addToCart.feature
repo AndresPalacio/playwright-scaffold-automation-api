@@ -23,3 +23,4 @@ Feature: Add products to cart
     When user search for a "All of Us with Wings"
     And user add the book to the cart
     Then the cart badge should get updated
+ 
